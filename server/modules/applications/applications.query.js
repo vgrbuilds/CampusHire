@@ -1,13 +1,13 @@
 import db from "../../config/db.js";
 
 const insertApplication = async (appData) => {
-    const { job_id, student_id, form_version_id, answers, status } = appData;
+    const { job_id, student_id, form_version_id, resume_id, answers, status } = appData;
     const query = `
-        INSERT INTO applications (job_id, student_id, form_version_id, answers, status)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO applications (job_id, student_id, form_version_id, resume_id, answers, status)
+        VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING *;
     `;
-    const result = await db.query(query, [job_id, student_id, form_version_id, answers, status]);
+    const result = await db.query(query, [job_id, student_id, form_version_id, resume_id, answers, status]);
     return result.rows[0];
 };
 
@@ -52,6 +52,17 @@ const deleteApplication = async (id) => {
     return result.rows[0];
 };
 
+const saveAiAnalysis = async (id, score, analysis) => {
+    const query = `
+        UPDATE applications
+        SET ai_score = $1, ai_analysis = $2, processed_at = CURRENT_TIMESTAMP
+        WHERE id = $3
+        RETURNING *;
+    `;
+    const result = await db.query(query, [score, analysis, id]);
+    return result.rows[0];
+};
+
 export default {
     insertApplication,
     getAllApplications,
@@ -59,5 +70,6 @@ export default {
     getApplicationsByStudent,
     getApplicationById,
     updateApplicationStatus,
-    deleteApplication
+    deleteApplication,
+    saveAiAnalysis
 };

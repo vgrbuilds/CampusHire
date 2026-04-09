@@ -6,14 +6,17 @@ CampusHire is a backend platform built to manage campus recruitment drives, job 
 
 * Backend: Node.js with Express
 * Database: PostgreSQL
+* Cache: Redis (ioredis)
+* AI: Google Gemini AI
 * Authentication: JWT (JSON Web Tokens)
-* Password Security: Bcrypt
+* File Handling: Multer
+* Infrastructure: Docker & Kubernetes (K8s)
 
 ## Folder Structure
 
 * config: Database connection settings
 * middleware: Security and auth filters
-* modules: Core business logic (Auth, Drives, Jobs, Forms, Applications)
+* modules: Core business logic (Auth, Drives, Jobs, Forms, Applications, AI)
 * scripts: Database schema and helper scripts
 * docs: Design and API documentation
 
@@ -27,8 +30,11 @@ CampusHire is a backend platform built to manage campus recruitment drives, job 
    JWT_SECRET=your_secret_key
    PORT=8000
 
-3. Start the server:
-   npm start
+3. Start the server (Development):
+   npm run dev
+
+4. Run Health Check:
+   npm run test:health
 
 ## Features
 
@@ -37,3 +43,7 @@ CampusHire is a backend platform built to manage campus recruitment drives, job 
 * Recruiters can post jobs and versioned application forms.
 * Students can browse jobs and apply.
 * Recruiters can track and update application statuses.
+* AI-assisted candidate evaluation: automatic scoring and fitment summary using Gemini AI.
+* Multi-Resume Management: Students can upload/manage up to 3 resumes and select the most relevant one per application.
+* Optimized Performance: Redis caching for frequently accessed recruitment drives.
+* DevOps Ready: Dockerized with Kubernetes manifests for scalable deployment including persistent storage for resumes.

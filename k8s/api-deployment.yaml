@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: campushire-api
+  labels:
+    app: api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: campushire-backend
+          image: campushire-server:latest # Local image name
+          imagePullPolicy: Never # Good for local testing if pushing to Docker Desktop
+          ports:
+            - containerPort: 8000
+          env:
+            # Setting environment variables. In a true production environment, these would be ConfigMaps and Secrets.
+            - name: PORT
+              value: "8000"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: campushire-secrets
+                  key: database_url
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: campushire-secrets
+                  key: jwt_secret
+            - name: JWT_EXPIRES_IN
+              value: "24h"
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: campushire-secrets
+                  key: redis_url
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: campushire-secrets
+                  key: gemini_api_key
+          volumeMounts:
+            - name: resumes-storage
+              mountPath: /usr/src/app/uploads
+      volumes:
+        - name: resumes-storage
+          persistentVolumeClaim:
+            claimName: campushire-uploads-pvc

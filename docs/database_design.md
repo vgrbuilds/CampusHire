@@ -72,11 +72,27 @@ Stores student applications to jobs.
 * job_id (references jobs)
 * student_id (references users)
 * form_version_id (references application_forms)
+* resume_id (references resumes)
 * answers (JSONB)
 * status
+* ai_score (integer, optional)
+* ai_analysis (text, optional)
+* processed_at (timestamp, optional)
 * created_at
 
 Each student can apply to a job only once.
+
+---
+
+### resumes
+
+Stores student resumes.
+
+* id (UUID, primary key)
+* student_id (references users)
+* title
+* file_url
+* created_at
 
 ---
 
@@ -88,6 +104,8 @@ Each student can apply to a job only once.
 * A job has many applications
 * A student (user) can apply to many jobs
 * Each application links to a specific form version
+* Each application links to a specific resume
+* A student has up to 3 resumes
 
 ---
 
