@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: campushire-api-service
+spec:
+  type: LoadBalancer # Exposes the service outward natively, acting identically to an Nginx LB
+  selector:
+    app: api
+  ports:
+    - protocol: TCP
+      port: 80 # The port exposed logically to the cluster
+      targetPort: 8000 # The port binding mapped in the Dockerfile
