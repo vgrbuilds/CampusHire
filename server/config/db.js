@@ -16,7 +16,7 @@ const pool = new Pool({
     // optional tuning (safe defaults)
     max: 10, // max connections
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000,
+    connectionTimeoutMillis: 20000, // Increased for Neon
 });
 
 // test connection on startup
