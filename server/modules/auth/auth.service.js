@@ -5,7 +5,15 @@ import query from "./auth.query.js";
 const register = async (userData) => {
     const { name, email, password, role } = userData;
     const hashedPassword = await bcrypt.hash(password, 10);
-    return await query.insertUser({ name, email, password: hashedPassword, role });
+    const user = await query.insertUser({ name, email, password: hashedPassword, role });
+    
+    const token = jwt.sign(
+        { id: user.id, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    return { token, user };
 };
 
 const login = async (email, password) => {

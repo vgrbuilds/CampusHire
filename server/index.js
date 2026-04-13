@@ -11,12 +11,19 @@ import aiRoutes from "./modules/ai/ai.routes.js";
 import resumesRoutes from "./modules/resumes/resumes.routes.js";
 import path from "path";
 
+import cors from "cors";
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
+
+// Health Check
+app.get("/", (req, res) => res.json({ status: "ok", message: "CampusHire API is live" }));
+app.get("/health", (req, res) => res.status(200).send("OK"));
 
 // Main Routes
 app.use("/api/auth", authRoutes);
